@@ -1,0 +1,127 @@
+{
+    "questions":[
+        {
+            "id":0,
+            "data":{
+                "title":"Which period saw the greatest percentage decrease in water prices?",
+                "options":["y0-y1","y1-y2","y2-y3","All the same", "Cannot Tell"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":1,
+            
+            "data":{
+                "title":"If a house cost £300,000 at the end of y1, what will it cost at the end of y3?",
+                "options":["£330,000",
+                    "£314,285.71",
+                    "£285,714.29",
+                    "£315,000",
+                    "None of these"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":2,
+            
+            "data":{
+                "title":"If the price of food was rebased in y1, what would the inflation index be for y3?",
+                "options":["115",
+                    "110",
+                    "105.4",
+                    "104.5",
+                    "None of these"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":3,
+            
+            "data":{
+                "title":"Which product experienced the biggest change in percentage terms in y1-y2?",
+                "options":["Food",
+                    "Houses",
+                    "Petrol",
+                    "Water",
+                    "Cannot tell"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":4,
+            
+            "data":{
+                "title":"The population of the UK in 2008 was 60,587,300.<br>What was the population of Northern Ireland, to the nearest thousand?",
+                "options":["1,818,000",
+                    "1,817,600",
+                    "1,817,619",
+                    "1,817,620"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":5,
+            
+            "data":{
+                "title":"The population of the UK in 2008 was 60,587,300.<br>If the population of the UK without England was considered, what percentage would Wales make up?",
+                "options":["50%",
+                    "5%",
+                    "31.25%",
+                    "5.96%",
+                    "None of these"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":6,
+            
+            "data":{
+                "title":"The population of the UK in 2008 was 60,587,300.<br>If the population of the UK grew on average 6% during 2008, what would you estimate the population of Scotland to be in 2009?",
+                "options":["290,819",
+                    "4,846,984",
+                    "5,137,803",
+                    "7,755,174"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":7,
+            
+            "data":{
+                "title":"The population of the UK in 2008 was 60,587,300.<br>If the population of Scotland was evenly distributed to the remaining 3 countries, what would be the population of Northern Ireland?",
+                "options":["6,664,603",
+                    "3,433,280",
+                    "1,817,619",
+                    "6,462,645"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":8,
+            
+            "data":{
+                "title":"The population of the UK in 2008 was 60,587,300.<br>If a new country joined the UK, of population 13 million, what percentage of the UK population would England make up?",
+                "options":["84.0%",
+                    "69.2%",
+                    "47.6%",
+                    "68.4%",
+                    "None of these"],
+                "correctAnswer":""
+            }
+        },
+        {
+            "id":9,
+            
+            "data":{
+                "title":"The population of the UK in 2008 was 60,587,300.<br>What is the ratio of people living in England to those living in Scotland?",
+                "options":["2:21",
+                    "21:2",
+                    "0.95",
+                    "0.095",
+                    "None of these"],
+                "correctAnswer":""
+            }
+        }
+
+    ]
+}
