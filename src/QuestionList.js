@@ -13,7 +13,14 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import StarIcon from '@material-ui/icons/Star';
+import Grid from '@material-ui/core/Grid'
 import Data from "./data.json";
+import One from './assets/1.gif';
 
 const styles = theme => ({
   root: {
@@ -34,19 +41,21 @@ const styles = theme => ({
 
 
 class VerticalLinearStepper extends React.Component {
-  state = {
-    activeStep: 0,
-  };
+  constructor() {
+    super();
+    this.state = {
+      questions : Data.questions,
+      activeStep: 0,
+      value: '',
+      answers: [],
+      showButton: false,
+    };
+  }
 
   handleNext = () => {
     this.setState({
       activeStep: this.state.activeStep + 1,
-    });
-  };
-
-  handleBack = () => {
-    this.setState({
-      activeStep: this.state.activeStep - 1,
+      showButton: false
     });
   };
 
@@ -56,11 +65,18 @@ class VerticalLinearStepper extends React.Component {
     });
   };
 
+  handleChange = (event, index) => {
+    const quests = this.state.questions;
+    quests[index]['checked'] = event.target.value;
+    this.setState({
+      questions : quests,
+      showButton: true,
+    })
+  };
+
   render() {
     const { classes } = this.props;
-    const { activeStep } = this.state;
-    const { questions } = Data
-    console.log('data', questions)
+    const { activeStep, value,questions } = this.state;
     return (
       <div className={classes.root}>
         <Stepper activeStep={activeStep} orientation="vertical">
@@ -69,46 +85,37 @@ class VerticalLinearStepper extends React.Component {
               <Step key={label}>
                 <StepLabel>Question {index}</StepLabel>
                 <StepContent>
-                  <Typography>{questions[index].data.title}</Typography>
-                  <FormControl component="fieldset" required className={classes.formControl}>
-                    <FormLabel component="legend">Gender</FormLabel>
-                    <RadioGroup
-                      aria-label="gender"
-                      name="gender1"
-                      className={classes.group}
-                      value={this.state.value}
-                      onChange={this.handleChange}
-                    >
-                      <FormControlLabel value="female" control={<Radio />} label="Female" />
-                      <FormControlLabel value="male" control={<Radio />} label="Male" />
-                      <FormControlLabel value="other" control={<Radio />} label="Other" />
-                      <FormControlLabel
-                        value="disabled"
-                        disabled
-                        control={<Radio />}
-                        label="(Disabled option)"
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                  <div className={classes.actionsContainer}>
-                    <div>
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={this.handleBack}
-                        className={classes.button}
+                <Grid container spacing={24}>
+                  <Grid item xs={12} sm={6}>
+                    <img src={One} alt="Missing image" style={{ maxWidth: '100%' }} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography>Q. {questions[index].data.title}</Typography>
+                    <FormControl component="fieldset" required>
+                      <RadioGroup
+                        name="questions"
+                        className={classes.group}
+                        value={label.checked ? label.checked : ''}
+                        onChange={(e) => this.handleChange(e, index)}
                       >
-                        Back
-                      </Button>
-                      <Button
-                        variant="raised"
-                        color="primary"
-                        onClick={this.handleNext}
-                        className={classes.button}
-                      >
-                        {activeStep === questions.length - 1 ? 'Finish' : 'Next'}
-                      </Button>
+                        {questions[index].data.options.map(option => <FormControlLabel value={option} control={<Radio color="primary" />} label={option} />)}
+                      </RadioGroup>
+                    </FormControl>
+                    <div className={classes.actionsContainer}>
+                      <div>
+                        {this.state.showButton &&
+                        <Button
+                          variant="raised"
+                          color="primary"
+                          onClick={this.handleNext}
+                          className={classes.button}
+                        >
+                          {activeStep === questions.length - 1 ? 'Finish' : 'Next'}
+                        </Button>}
+                      </div>
                     </div>
-                  </div>
+                  </Grid>
+                </Grid>
                 </StepContent>
               </Step>
             );
@@ -117,6 +124,16 @@ class VerticalLinearStepper extends React.Component {
         {activeStep === questions.length && (
           <Paper square elevation={0} className={classes.resetContainer}>
             <Typography>All steps completed - you&quot;re finished</Typography>
+            <List component="nav">
+                {questions.map((ans, index) => (
+                  <ListItem button>
+                    <ListItemIcon>
+                      <StarIcon />
+                    </ListItemIcon>
+                    <ListItemText inset primary={ans.data.title} secondary={ans.checked} />
+                  </ListItem>
+                ))}
+            </List>
             <Button onClick={this.handleReset} className={classes.button}>
               Reset
             </Button>
