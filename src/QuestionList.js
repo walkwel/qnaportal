@@ -32,6 +32,8 @@ const styles = theme => ({
   },
   actionsContainer: {
     marginBottom: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 20,
+    marginLeft: theme.spacing.unit * 50,
   },
   resetContainer: {
     padding: theme.spacing.unit * 3,
@@ -90,7 +92,7 @@ class VerticalLinearStepper extends React.Component {
                     <img src={One} alt="Missing image" style={{ maxWidth: '100%' }} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Typography>Q. {questions[index].data.title}</Typography>
+                    <Typography variant="headline" align="justify" color="primary" paragraph={true} gutterBottom>Q. {questions[index].data.title}</Typography>
                     <FormControl component="fieldset" required>
                       <RadioGroup
                         name="questions"

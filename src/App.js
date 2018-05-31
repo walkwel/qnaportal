@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import Questions from './questions';
-import List from './QuestionList'
+import paragraph from '@material-ui/core/Typography'
+import QuestionList from './QuestionList'
 
 
 
 import './App.css';
+import { Typography } from '@material-ui/core';
 
 class App extends Component {
   
   render() {
     return (
       <div className="App">
-        <h1 className="App-intro">
-          NUMERICAL <code>REASONING</code>.
-        </h1>
-        <List />
+        <Typography variant="display3" color="primary" align="center" >
+          NUMERICAL REASONING
+        </Typography>
+        <QuestionList />
       </div>
     );
   }
