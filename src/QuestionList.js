@@ -20,6 +20,18 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star';
 import Grid from '@material-ui/core/Grid'
+
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withHandlers } from 'recompose';
+import {
+  firebaseConnect,
+  isLoaded,
+  isEmpty
+} from 'react-redux-firebase';
+import { firebase as firebaseConf } from './config';
+
+
 import Data from "./data.json";
 import One from './assets/1.gif';
 
@@ -41,13 +53,22 @@ const styles = theme => ({
   },
 });
 
+const enhance = compose(
+  firebaseConnect([
+    "questions"
+  ]),
+  connect(({firebase}, props) => ({
+    questions: firebase.data.questions,
+  }))
+)
+
 let score = 0;
 
-class VerticalLinearStepper extends React.Component {
-  constructor() {
-    super();
+class QuestionList extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      questions : Data.questions,
+      questions : this.props.test,
       activeStep: 0,
       value: '',
       answers: [],
@@ -69,9 +90,26 @@ class VerticalLinearStepper extends React.Component {
     });
   };
 
+  submitResult = () => {
+    let data = {}
+    this.props.questions.forEach(quest => {
+      data[quest.id.toString()] = {'title': quest.data.title, 'answer': quest.checked}
+    });
+    let result = this.state.score*10
+    this.props.firebase.set(`users/${this.props.userKey}/score`, `${result}`)
+  }
+
   handleChange = (event, index) => {
-    const quests = this.state.questions;
+    const quests = this.props.questions;
     quests[index]['checked'] = event.target.value;
+    console.log('data', quests)
+    this.props.firebase.set(`users/${this.props.userKey}/submission/q${index+1}`, {'timestamp': Date.now(), 'answer': event.target.value})
+    // this.props.firebase.push('submission', {"q1":'123',"score":20});
+    // let dbCon = this.props.firebase.database().ref('/submission');
+    // dbCon.push({
+    //   message: event.target.value
+    // });
+    // this.props.firebase.push(`users/${this.props.userKey}/submission/${quest.id}`, data)
     if (quests[index].checked === quests[index].data.correctAnswer) {
       score++
     }
@@ -83,13 +121,14 @@ class VerticalLinearStepper extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { activeStep, value, questions, score, showError } = this.state;
+    const { classes, questions } = this.props;
+    const { activeStep, value, score, showError } = this.state;
     return (
       <div className={classes.root}>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {questions.map((label, index) => {
-            return (
+        
+          {isLoaded(questions)
+          ? <Stepper activeStep={activeStep} orientation="vertical">
+            {questions.map((label, index) => (
               <Step key={label}>
                 <StepLabel>Question {index+1}</StepLabel>
                 <StepContent>
@@ -115,7 +154,7 @@ class VerticalLinearStepper extends React.Component {
                         <Button
                           variant="raised"
                           color="primary"
-                          onClick={this.handleNext}
+                          onClick={activeStep === questions.length - 1 ? this.submitResult :this.handleNext}
                           className={classes.button}
                         >
                           {activeStep === questions.length - 1 ? 'Finish' : 'Next'}
@@ -126,10 +165,13 @@ class VerticalLinearStepper extends React.Component {
                 </Grid>
                 </StepContent>
               </Step>
-            );
-          })}
-        </Stepper>
-        {activeStep === questions.length && (
+            ))}
+            </Stepper>
+          : ''
+        }
+        
+        {isLoaded(questions)
+        ? activeStep === questions.length && (
           <Paper square elevation={0} className={classes.resetContainer}>
             <Typography>All steps completed - you&quot;re finished</Typography>
             <List component="nav">
@@ -148,14 +190,15 @@ class VerticalLinearStepper extends React.Component {
               Reset
             </Button>
           </Paper>
-        )}
+        )
+      : ''}
       </div>
     );
   }
 }
 
-VerticalLinearStepper.propTypes = {
+QuestionList.propTypes = {
   classes: PropTypes.object,
 };
 
-export default withStyles(styles)(VerticalLinearStepper);
+export default enhance(withStyles(styles)(QuestionList));

@@ -1,22 +1,39 @@
 import React, { Component } from 'react';
-import paragraph from '@material-ui/core/Typography'
-import QuestionList from './QuestionList'
-
-
-
-import './App.css';
+import { Provider } from 'react-redux';
 import { Typography } from '@material-ui/core';
+import configureStore from './store';
+import paragraph from '@material-ui/core/Typography';
+import QuestionList from './QuestionList';
+import './App.css';
+import User from './User';
+
+const initialState = window.__INITIAL_STATE__ || { firebase: { authError: null } }
+const store = configureStore(initialState)
 
 class App extends Component {
-  
+  constructor() {
+    super();
+    this.state = {
+      userKey: null
+    }
+  }
+  showList = (dataFromChild) => {
+    this.setState({
+      userKey: dataFromChild
+    })
+  }
   render() {
+    console.log('data', this.state.userKey)
     return (
-      <div className="App">
-        <Typography variant="display3" color="primary" align="center" >
-          NUMERICAL REASONING
-        </Typography>
-        <QuestionList />
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          {this.state.userKey === null ? <User enteredUser={this.showList} /> : 
+            <div>
+              <Typography variant="display3" color="primary" align="center" >NUMERICAL REASONING</Typography>
+              <QuestionList userKey={this.state.userKey}/>
+            </div>}
+        </div>
+      </Provider>
     );
   }
 }
