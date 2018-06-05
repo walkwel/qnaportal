@@ -91,6 +91,10 @@ class QuestionList extends React.Component {
   };
 
   submitResult = () => {
+    this.setState({
+      activeStep: this.state.activeStep + 1,
+      showButton: false,
+    });
     let data = {}
     this.props.questions.forEach(quest => {
       data[quest.id.toString()] = {'title': quest.data.title, 'answer': quest.checked}
@@ -103,7 +107,7 @@ class QuestionList extends React.Component {
     const quests = this.props.questions;
     quests[index]['checked'] = event.target.value;
     console.log('data', quests)
-    this.props.firebase.set(`users/${this.props.userKey}/submission/q${index+1}`, {'timestamp': Date.now(), 'answer': event.target.value})
+    //this.props.firebase.set(`users/${this.props.userKey}/submission/q${index+1}`, {'timestamp': Date.now(), 'answer': event.target.value})
     // this.props.firebase.push('submission', {"q1":'123',"score":20});
     // let dbCon = this.props.firebase.database().ref('/submission');
     // dbCon.push({
@@ -126,8 +130,7 @@ class QuestionList extends React.Component {
     return (
       <div className={classes.root}>
         
-          {isLoaded(questions)
-          ? <Stepper activeStep={activeStep} orientation="vertical">
+          {<Stepper activeStep={activeStep} orientation="vertical">
             {questions.map((label, index) => (
               <Step key={label}>
                 <StepLabel>Question {index+1}</StepLabel>
@@ -167,11 +170,10 @@ class QuestionList extends React.Component {
               </Step>
             ))}
             </Stepper>
-          : ''
+          
         }
         
-        {isLoaded(questions)
-        ? activeStep === questions.length && (
+        {activeStep === questions.length && (
           <Paper square elevation={0} className={classes.resetContainer}>
             <Typography>All steps completed - you&quot;re finished</Typography>
             <List component="nav">
@@ -190,8 +192,7 @@ class QuestionList extends React.Component {
               Reset
             </Button>
           </Paper>
-        )
-      : ''}
+        )}
       </div>
     );
   }
