@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactCountdownClock from 'react-countdown-clock'
 import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -74,9 +75,16 @@ class QuestionList extends React.Component {
       answers: [],
       showButton: false,
       score: 0,
+      takenTime: 0,
+      currentTime: 0,
     };
   }
-
+  componentDidMount() {
+    this.setState({
+      currentTime: Date.now()
+    })
+  }
+  
   handleNext = () => {
     this.setState({
       activeStep: this.state.activeStep + 1,
@@ -106,30 +114,42 @@ class QuestionList extends React.Component {
   handleChange = (event, index) => {
     const quests = this.props.questions;
     quests[index]['checked'] = event.target.value;
-    console.log('data', quests)
-    //this.props.firebase.set(`users/${this.props.userKey}/submission/q${index+1}`, {'timestamp': Date.now(), 'answer': event.target.value})
     // this.props.firebase.push('submission', {"q1":'123',"score":20});
     // let dbCon = this.props.firebase.database().ref('/submission');
     // dbCon.push({
     //   message: event.target.value
     // });
-    // this.props.firebase.push(`users/${this.props.userKey}/submission/${quest.id}`, data)
+    //this.props.firebase.push(`users/${this.props.userKey}/submission/${quest.id}`, data)
     if (quests[index].checked === quests[index].data.correctAnswer) {
       score++
     }
+    let timeTaken = parseInt((Date.now()- this.state.currentTime)/1000);
     this.setState({
       questions : quests,
       showButton: true,
       score: score,
+      takenTime: timeTaken
     })
+    this.props.firebase.set(`users/${this.props.userKey}/submission/q${index+1}`, {'timestamp': Date.now(), 'answer': event.target.value})
   };
 
+  myCallback = () => {
+    console.log('object')
+  }
+  
   render() {
     const { classes, questions } = this.props;
-    const { activeStep, value, score, showError } = this.state;
+    const { activeStep, value, score, showError, minutes } = this.state;
     return (
       <div className={classes.root}>
-        
+        <div style={{ float: 'right' }}>
+        <ReactCountdownClock seconds={60*10}
+                     color="#3f51b5"
+                     alpha={0.9}
+                     size={100}
+                     onComplete={this.myCallback} />
+          </div>
+          <Typography variant="display2">{this.state.takenTime <= 60 ? `${this.state.takenTime} sec` : `${parseInt((this.state.takenTime)/60)} min`}</Typography>
           {<Stepper activeStep={activeStep} orientation="vertical">
             {questions.map((label, index) => (
               <Step key={label}>
@@ -137,7 +157,7 @@ class QuestionList extends React.Component {
                 <StepContent>
                 <Grid container spacing={24}>
                   <Grid item xs={12} sm={6}>
-                    <img src={One} alt="Missing image" style={{ maxWidth: '100%' }} />
+                    <img src={questions[index].data.img} alt="Missing image" style={{ maxWidth: '100%' }} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <Typography variant="title" align="justify" gutterBottom>Q. {questions[index].data.title}</Typography>
@@ -148,7 +168,7 @@ class QuestionList extends React.Component {
                         value={label.checked ? label.checked : ''}
                         onChange={(e) => this.handleChange(e, index)}
                       >
-                        {questions[index].data.options.map(option => <FormControlLabel value={option}  control={<Radio color="primary" />} label={option} />)}
+                        {questions[index].data.options.map(option => <FormControlLabel value={option} key={option} control={<Radio color="primary" />} label={option} />)}
                       </RadioGroup>
                     </FormControl>
                     <div className={classes.actionsContainer}>
