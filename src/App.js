@@ -23,7 +23,6 @@ class App extends Component {
     })
   }
   render() {
-    console.log('data', this.state.userKey)
     return (
       <Provider store={store}>
         <div className="App">

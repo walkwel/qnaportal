@@ -109,6 +109,7 @@ class QuestionList extends React.Component {
     });
     let result = this.state.score*10
     this.props.firebase.set(`users/${this.props.userKey}/score`, `${result}`)
+    this.props.firebase.set(`users/${this.props.userKey}/totalTime`, this.state.takenTime)
   }
 
   handleChange = (event, index) => {
@@ -133,8 +134,8 @@ class QuestionList extends React.Component {
     this.props.firebase.set(`users/${this.props.userKey}/submission/q${index+1}`, {'timestamp': Date.now(), 'answer': event.target.value})
   };
 
-  myCallback = () => {
-    console.log('object')
+  myCallback = (event) => {
+    console.log('object', event.target.seconds)
   }
   
   render() {
@@ -142,12 +143,14 @@ class QuestionList extends React.Component {
     const { activeStep, value, score, showError, minutes } = this.state;
     return (
       <div className={classes.root}>
-        <div style={{ float: 'right' }}>
-        <ReactCountdownClock seconds={60*10}
-                     color="#3f51b5"
-                     alpha={0.9}
-                     size={100}
-                     onComplete={this.myCallback} />
+        <div style={{ position: 'fixed', right: 0 }}>
+          <ReactCountdownClock
+            seconds={60*10}
+            color="#3f51b5"
+            alpha={0.9}
+            size={100}
+            paused={this.state.activeStep === 10 ? true : false}
+            onComplete={this.myCallback} />
           </div>
           <Typography variant="display2">{this.state.takenTime <= 60 ? `${this.state.takenTime} sec` : `${parseInt((this.state.takenTime)/60)} min`}</Typography>
           {<Stepper activeStep={activeStep} orientation="vertical">
