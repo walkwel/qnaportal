@@ -163,16 +163,16 @@ class QuestionList extends React.Component {
             onComplete={this.myCallback} />
         </div>
           {<Stepper activeStep={activeStep} orientation="vertical">
-            {questions.map((label, index) => (
+            {questions && questions.map((label, index) => (
               <Step key={label}>
                 <StepLabel>Question {index+1}</StepLabel>
                 <StepContent>
                 <Grid container spacing={24}>
                   <Grid item xs={12} sm={6}>
-                    <img src={questions[index].data.img} alt="Missing image" style={{ maxWidth: '100%' }} />
+                    <img src={label.data.img} alt="Missing image" style={{ maxWidth: '100%' }} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Typography variant="title" align="justify" gutterBottom>Q. {questions[index].data.title}</Typography>
+                    <Typography variant="title" align="justify" gutterBottom>Q. {label.data.title}</Typography>
                     <FormControl component="fieldset" required>
                       <RadioGroup
                         name="questions"
@@ -180,7 +180,7 @@ class QuestionList extends React.Component {
                         value={label.checked ? label.checked : ''}
                         onChange={(e) => this.handleChange(e, index)}
                       >
-                        {questions[index].data.options.map(option => <FormControlLabel value={option} key={option} control={<Radio color="primary" />} label={option} />)}
+                        {label.data.options.map(option => <FormControlLabel value={option} key={option} control={<Radio color="primary" />} label={option} />)}
                       </RadioGroup>
                     </FormControl>
                     <div className={classes.actionsContainer}>
