@@ -155,7 +155,7 @@ class QuestionList extends React.Component {
       <div className={classes.root}>
         <div style={{ position: 'fixed', right: 0 }}>
           <ReactCountdownClock
-            seconds={20}
+            seconds={60*10}
             color="#3f51b5"
             alpha={0.9}
             size={100}
