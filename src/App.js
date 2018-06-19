@@ -26,14 +26,14 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        {/* <Routes /> */}
-        <div className="App">
+        <Routes />
+        {/* <div className="App">
           {this.state.userKey === null ? <User enteredUser={this.showList} /> : 
             <div>
               <Typography variant="display3" color="primary" align="center" >NUMERICAL REASONING</Typography>
               <QuestionList timeComplete={this.timeComplete} userKey={this.state.userKey}/>
             </div>}
-        </div>
+        </div> */}
       </Provider>
     );
   }

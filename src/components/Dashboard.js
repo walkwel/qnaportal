@@ -14,8 +14,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TileData from './TileData';
 import QuestionBank from './QuestionBank';
-import Categories from './Categories'
-import QuestionList from '../QuestionList';
+import Categories from './Categories';
+import CreateTest from './CreateTest';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -142,6 +142,10 @@ class MiniDrawer extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
+          {
+            this.state.selectedList === 'TestManage' &&
+            <CreateTest createTest='Create Test' />
+          }
           {
             this.state.selectedList === 'QuestionBank' &&
             <QuestionBank />
