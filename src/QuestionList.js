@@ -27,14 +27,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {
   firebaseConnect,
-  isLoaded,
-  isEmpty
 } from 'react-redux-firebase';
-import { firebase as firebaseConf } from './config';
-
-
-import Data from "./data.json";
-import One from './assets/1.gif';
 
 const styles = theme => ({
   root: {
