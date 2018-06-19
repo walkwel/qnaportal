@@ -11,13 +11,13 @@ class Routes extends Component {
         <div>
           <Route
             exact
-            path='/dashboard'
+            path='/'
             name='Dashboard'
             component={Dashboard}
           />
           <Route
             exact
-            path='/'
+            path='/dashboard'
             name='TestPage'
             component={TestPage}
           />
