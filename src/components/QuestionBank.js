@@ -44,7 +44,7 @@ const styles = theme => ({
   },
 });
 
-class EnhancedTable extends React.Component {
+class EnhancedTable extends Component {
   constructor(props) {
     super(props);
 
@@ -126,9 +126,10 @@ class EnhancedTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  addQuestion = (data, length) => {
-    // this.state.questions.map(question => question.data.map(d => d.push({title: data})))
-    this.props.firebase.set(`questions/${length++}/data/`, {'title': data, 'correctAnswer': 'yes its right', 'img': 'mypic.jpg'})
+  addQuestion = (object, length) => {
+    let questionNumber = length++
+    this.props.firebase.set(`questions/${questionNumber}/data/`, {'title': object.addedQuestion, 'correctAnswer': object.addedCorrectAnswer, 'img': 'mypic.jpg'})
+    this.props.firebase.set(`questions/${questionNumber}/id/`, `${questionNumber}`)
   }
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;

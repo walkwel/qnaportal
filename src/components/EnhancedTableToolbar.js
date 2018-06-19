@@ -73,7 +73,7 @@ class EnhancedTableToolbar extends Component {
     event.preventDefault();
     let question = [this.props.questions]
     console.log('object', this.state)
-    // this.props.addQuestion(this.state.addedQuestion, Object.keys(question[0]).length);
+    this.props.addQuestion(this.state, Object.keys(question[0]).length);
     this.setState({
       open: false,
       addedQuestion: '',
