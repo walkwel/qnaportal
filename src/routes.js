@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
-import Dashboard from './components/Dashboard'
+import Dashboard from './components/Dashboard';
+import TestPage from './components/TestPage';
 
 class Routes extends Component {
   render() {
@@ -10,9 +11,15 @@ class Routes extends Component {
         <div>
           <Route
             exact
-            path='/'
+            path='/dashboard'
             name='Dashboard'
             component={Dashboard}
+          />
+          <Route
+            exact
+            path='/'
+            name='TestPage'
+            component={TestPage}
           />
         </div>
       </BrowserRouter>
